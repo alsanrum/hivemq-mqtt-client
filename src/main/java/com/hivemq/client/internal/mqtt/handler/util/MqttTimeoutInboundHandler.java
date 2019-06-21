@@ -25,6 +25,7 @@ import com.hivemq.client.mqtt.mqtt5.message.disconnect.Mqtt5DisconnectReasonCode
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.ScheduledFuture;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,8 +103,9 @@ public abstract class MqttTimeoutInboundHandler extends MqttConnectionAwareHandl
     }
 
     @Override
-    protected void onDisconnectEvent(final @NotNull MqttDisconnectEvent disconnectEvent) {
-        super.onDisconnectEvent(disconnectEvent);
+    protected void onDisconnectEvent(
+            final @NotNull ChannelHandlerContext ctx, final @NotNull MqttDisconnectEvent disconnectEvent) {
+
         cancelTimeout();
     }
 
@@ -124,9 +126,4 @@ public abstract class MqttTimeoutInboundHandler extends MqttConnectionAwareHandl
      * @return the Reason String that will be used to notify the API and may also be sent with a DISCONNECT message.
      */
     protected abstract @NotNull String getTimeoutReasonString();
-
-    @Override
-    public final boolean isSharable() {
-        return false;
-    }
 }

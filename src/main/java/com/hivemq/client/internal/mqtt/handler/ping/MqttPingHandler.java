@@ -123,8 +123,9 @@ public class MqttPingHandler extends MqttConnectionAwareHandler
     }
 
     @Override
-    protected void onDisconnectEvent(final @NotNull MqttDisconnectEvent disconnectEvent) {
-        super.onDisconnectEvent(disconnectEvent);
+    protected void onDisconnectEvent(
+            final @NotNull ChannelHandlerContext ctx, final @NotNull MqttDisconnectEvent disconnectEvent) {
+
         if (timeoutFuture != null) {
             timeoutFuture.cancel(false);
             timeoutFuture = null;

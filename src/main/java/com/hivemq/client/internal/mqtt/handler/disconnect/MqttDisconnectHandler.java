@@ -139,12 +139,9 @@ public class MqttDisconnectHandler extends MqttConnectionAwareHandler {
     }
 
     @Override
-    protected void onDisconnectEvent(final @NotNull MqttDisconnectEvent disconnectEvent) {
-        final ChannelHandlerContext ctx = this.ctx;
-        if (ctx == null) {
-            return;
-        }
-        super.onDisconnectEvent(disconnectEvent);
+    protected void onDisconnectEvent(
+            final @NotNull ChannelHandlerContext ctx, final @NotNull MqttDisconnectEvent disconnectEvent) {
+
         once = false;
 
         final MqttClientConnectionConfig connectionConfig = clientConfig.getRawConnectionConfig();
@@ -216,10 +213,5 @@ public class MqttDisconnectHandler extends MqttConnectionAwareHandler {
     public void channelUnregistered(final @NotNull ChannelHandlerContext ctx) {
         ctx.fireChannelUnregistered();
         clientConfig.releaseEventLoop();
-    }
-
-    @Override
-    public boolean isSharable() {
-        return false;
     }
 }
